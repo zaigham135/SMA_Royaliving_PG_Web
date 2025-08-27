@@ -79,6 +79,11 @@ const ImageUpload = ({
     }
   }
 
+  // Keep preview in sync when editing existing student (prop changes)
+  React.useEffect(() => {
+    setPreview(currentImageUrl || '')
+  }, [currentImageUrl])
+
   const isImageKitReady = isImageKitAvailable()
 
   return (

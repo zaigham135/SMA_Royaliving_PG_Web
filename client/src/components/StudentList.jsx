@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import logo from '../image/logo.jpg'
 import StudentsTable from './StudentsTable'
 import StudentDetailsModal from './StudentDetailsModal'
+import StudentForm from './StudentForm'
 import AlertModal from './AlertModal'
 import { useStudents } from '../hooks/useStudents'
 import { useAlert } from '../hooks/useAlert'
@@ -11,6 +12,7 @@ const StudentList = () => {
   const [filter, setFilter] = useState('')
   const [editing, setEditing] = useState(null)
   const [detailsModal, setDetailsModal] = useState({ isOpen: false, student: null })
+  const [showEditForm, setShowEditForm] = useState(false)
 
   const {
     students,
@@ -62,7 +64,9 @@ const StudentList = () => {
   // Handle student update
   const handleStudentUpdate = async (studentData) => {
     try {
-      await updateStudent(editing.id, studentData)
+      if (editing?.id) {
+        await updateStudent(editing.id, studentData)
+      }
       showSuccess('Success!', 'Student updated successfully!')
       setEditing(null)
     } catch (err) {
@@ -118,6 +122,22 @@ const StudentList = () => {
   // Handle view details
   const handleViewDetails = (student) => {
     setDetailsModal({ isOpen: true, student })
+  }
+
+  const handleEditClick = (student) => {
+    setEditing(student)
+    setShowEditForm(true)
+  }
+
+  const handleEditSaved = async (data) => {
+    try {
+      if (editing?.id) await updateStudent(editing.id, data)
+      showSuccess('Success!', 'Student updated successfully!')
+      setShowEditForm(false)
+      setEditing(null)
+    } catch (err) {
+      showError('Error', err?.response?.data?.error || 'Failed to update student')
+    }
   }
 
   // Handle close details modal
@@ -193,7 +213,17 @@ const StudentList = () => {
         onToggleSelect={handleToggleSelection}
         onSelectAll={handleSelectAll}
         onViewDetails={handleViewDetails}
+        onEditClick={handleEditClick}
       />
+
+      {showEditForm && (
+        <div className="edit-modal">
+          <div className="modal-inner">
+            <button className="close-edit" onClick={() => { setShowEditForm(false); setEditing(null) }}>&times;</button>
+            <StudentForm onSaved={handleEditSaved} editing={editing} setEditing={setEditing} />
+          </div>
+        </div>
+      )}
 
       {/* Student Details Modal */}
       <StudentDetailsModal

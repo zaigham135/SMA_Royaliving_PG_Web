@@ -214,11 +214,102 @@ button:disabled {
 .actions { 
   display: flex; 
   gap: 8px; 
+  align-items: center;
 }
 
 .actions button {
   padding: 6px 12px;
   font-size: 0.75rem;
+}
+
+/* Profile cell layout */
+.profile-cell .student-profile-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.profile-image-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e5e7eb, #f8fafc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.student-info .student-name { font-weight: 600; color: #111827 }
+.student-info .student-id { font-size: 0.75rem; color: #6b7280 }
+
+/* Align actions cell to the right and center vertically for symmetry */
+.table td.actions {
+  text-align: right;
+  vertical-align: middle;
+  width: 220px;
+}
+
+.actions button { min-width: 68px }
+
+/* Edit modal — reuse existing modal styles for consistency */
+.edit-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 20px;
+}
+
+.modal-inner {
+  background: #fff;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  animation: modalSlideIn 0.28s ease-out;
+  padding: 28px 28px 36px 28px;
+  position: relative; /* allow absolutely positioned close button inside modal */
+}
+
+.close-edit {
+  background: none;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  position: absolute;
+  right: 28px;
+  top: 18px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* Ensure image preview inside ImageUpload fits the modal */
+.image-preview img,
+.image-upload-area img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
 }
 
 .badge { 

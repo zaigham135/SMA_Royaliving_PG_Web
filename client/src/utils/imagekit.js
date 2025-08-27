@@ -35,8 +35,9 @@ export const uploadToImageKit = async (file, folder = 'pg-students') => {
   if (auth.expire) form.append('expire', auth.expire)
 
     // Use explicit upload endpoint if provided, otherwise default to ImageKit upload API
-  // Use either configured upload endpoint or fallback to standard ImageKit upload URL
-  const uploadUrl = import.meta.env.VITE_IMAGEKIT_UPLOAD_ENDPOINT || auth.urlEndpoint?.replace(/https?:\/\//, 'https://upload.') || 'https://upload.imagekit.io/api/v1/files/upload'
+    // Prefer a configured VITE_IMAGEKIT_UPLOAD_ENDPOINT, otherwise use the global ImageKit upload endpoint.
+    // Avoid constructing an invalid host by naively prefixing 'upload.' to the urlEndpoint.
+    const uploadUrl = import.meta.env.VITE_IMAGEKIT_UPLOAD_ENDPOINT || 'https://upload.imagekit.io/api/v1/files/upload'
     const uploadResp = await fetch(uploadUrl, { method: 'POST', body: form })
     if (!uploadResp.ok) {
       const text = await uploadResp.text()

@@ -18,7 +18,7 @@ const formatDisplayId = (student) => {
   return student.serial != null ? `SMA-${String(student.serial).padStart(5, '0')}` : formatId(student.id)
 }
 
-const TableRow = memo(({ student, selectedIds, onToggleSelect, onEdit, onDelete, onViewDetails }) => (
+const TableRow = memo(({ student, selectedIds, onToggleSelect, onEdit, onDelete, onViewDetails, onEditClick }) => (
   <tr key={student.id}>
     <td className="checkbox-cell">
       <input 
@@ -57,7 +57,7 @@ const TableRow = memo(({ student, selectedIds, onToggleSelect, onEdit, onDelete,
     <td><span className="badge">₹{student.fee_due}</span></td>
     <td className="actions">
       <button onClick={() => onViewDetails(student)}>Details</button>
-      <button onClick={() => onEdit(student)}>Edit</button>
+      <button onClick={() => onEditClick ? onEditClick(student) : onEdit(student)}>Edit</button>
       <button className="danger" onClick={() => onDelete(student.id)}>Delete</button>
     </td>
   </tr>
@@ -72,7 +72,8 @@ const StudentsTable = ({
   selectedIds, 
   onToggleSelect, 
   onSelectAll, 
-  onViewDetails 
+  onViewDetails,
+  onEditClick
 }) => {
   const allSelected = rows.length > 0 && rows.every(r => selectedIds.has(r.id))
 
@@ -107,6 +108,7 @@ const StudentsTable = ({
               onEdit={onEdit}
               onDelete={onDelete}
               onViewDetails={onViewDetails}
+              onEditClick={onEditClick}
             />
           ))}
         </tbody>

@@ -11,7 +11,9 @@ export const useStudents = () => {
       setLoading(true)
       setError(null)
       const { data } = await api.get('/students')
-      setStudents(data)
+  // Normalize students: ensure each has a string `id` property (use `_id` when present)
+  const normalized = (data || []).map(s => ({ ...s, id: String(s._id ?? s.id ?? '') }))
+  setStudents(normalized)
     } catch (err) {
       setError(err?.response?.data?.error || 'Failed to load students')
       console.error('Error loading students:', err)
@@ -25,7 +27,8 @@ export const useStudents = () => {
       setLoading(true)
       setError(null)
       const { data } = await api.post('/students', studentData)
-      setStudents(prev => [data, ...prev])
+  const s = { ...data, id: String(data._id ?? data.id ?? '') }
+  setStudents(prev => [s, ...prev])
       return data
     } catch (err) {
       setError(err?.response?.data?.error || 'Failed to add student')
@@ -40,11 +43,12 @@ export const useStudents = () => {
       setLoading(true)
       setError(null)
       const { data } = await api.put(`/students/${id}`, studentData)
+      const normalized = { ...data, id: String(data._id ?? data.id ?? '') }
       setStudents(prev => {
         const index = prev.findIndex(s => s.id === id)
         if (index >= 0) {
           const updated = [...prev]
-          updated[index] = data
+          updated[index] = normalized
           return updated
         }
         return prev
@@ -77,7 +81,9 @@ export const useStudents = () => {
       setLoading(true)
       setError(null)
       await api.post('/students/bulk-delete', { ids })
-      setStudents(prev => prev.filter(s => !ids.includes(s.id)))
+  // ids may be ObjectId strings; compare as strings
+  const idSet = new Set((ids || []).map(String))
+  setStudents(prev => prev.filter(s => !idSet.has(String(s.id))))
     } catch (err) {
       setError(err?.response?.data?.error || 'Failed to delete students')
       throw err
@@ -106,7 +112,7 @@ export const useStudents = () => {
   }, [])
 
   const getStudentById = useCallback((id) => {
-    return students.find(s => s.id === id)
+  return students.find(s => String(s.id) === String(id))
   }, [students])
 
   const studentsCount = useMemo(() => students.length, [students])

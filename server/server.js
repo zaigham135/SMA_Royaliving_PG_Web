@@ -46,6 +46,10 @@ const isValidImageKitFileId = (fileId) => {
 // Helper: ensure a returned image path is a full URL (prefix with urlEndpoint when needed)
 const buildFullImageUrl = (maybeUrl) => {
   if (!maybeUrl) return ''
+  // Don't touch blob/data URLs or localhost preview URLs — these are client-side previews
+  if (typeof maybeUrl === 'string' && (maybeUrl.startsWith('blob:') || maybeUrl.startsWith('data:') || maybeUrl.includes('localhost'))) {
+    return maybeUrl
+  }
   if (/^https?:\/\//i.test(maybeUrl)) return maybeUrl
   const base = process.env.IMAGEKIT_URL_ENDPOINT || ''
   if (!base) return maybeUrl
@@ -136,20 +140,25 @@ app.get("/api/students", async (req, res) => {
   try {
     let students = await Student.find().sort({ createdAt: -1 });
 
-    // Normalize image URLs for client consumption
+    // Normalize image URLs for client consumption; avoid attempting to convert local/client-preview images
     students = students.map(s => {
       const obj = s.toObject ? s.toObject() : s
-      if (obj.profileImage) {
+
+      // If the stored profileImage looks invalid (local blob, local preview, or local fileId), clear it for the client
+      if (isInvalidStoredImage(obj.profileImage)) {
+        obj.profileImage = null
+      } else if (obj.profileImage) {
         obj.profileImage.url = buildFullImageUrl(obj.profileImage.url)
         obj.profileImage.optimizedUrl = makeOptimizedUrl(obj.profileImage.url)
       }
+
       if (obj.documents && Array.isArray(obj.documents)) {
         obj.documents = obj.documents.map(d => ({
           ...d,
           url: buildFullImageUrl(d.url)
         }))
       }
-    
+
       return obj
     })
 
