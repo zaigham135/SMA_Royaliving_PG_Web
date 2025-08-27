@@ -1,65 +1,61 @@
-<<<<<<< HEAD
-# PG Student Manager — Server
-
-## Install & Run
-=======
 # PG Student Manager (React + Node.js + SQLite + Excel Export)
 
-**اردو ہدایت**
+This repository contains a full-stack sample application to manage PG/hostel students.
 
-یہ ایک سادہ سا مکمل نظام (Full‑Stack) ہے جس سے آپ اپنے PG میں رہنے والے اسٹوڈنٹس کا ڈیٹا محفوظ، اپڈیٹ، ڈلیٹ اور ایکسپورٹ (Excel) کر سکتے ہیں۔  
-سرور Node.js/Express پر ہے اور ڈیٹا SQLite فائل میں اسٹور ہوتا ہے، اس لئے کوئی الگ ڈیٹا بیس سرور لگانے کی ضرورت نہیں۔ فرنٹ اینڈ React (Vite) میں ہے۔
+Contents:
+- server/ — Node.js + Express API (stores data in SQLite)
+- client/ — React (Vite) frontend
 
-## کیسے چلائیں؟
-1) Node.js انسٹال ہو (v18+ بہتر ہے)۔
-2) ایک ٹرمینل کھولیں:
->>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
-```bash
+Quick start
+1) Ensure Node.js v18+ is installed.
+2) Start the server:
+
+```powershell
 cd server
-cp .env.example .env
+copy .env.example .env    # on PowerShell; use cp on Unix
 npm install
 npm run start
-<<<<<<< HEAD
-# or for dev:
-npm run dev
+# for development: npm run dev
 ```
-API runs on http://localhost:3001 by default.
 
-## API
-- `GET /api/students` — list
-- `POST /api/students` — create (JSON body: { name, phone, room, join_date, fee_due, notes })
-- `PUT /api/students/:id` — update
-- `DELETE /api/students/:id` — delete
-- `GET /api/export` — download Excel file
-- `POST /api/seed` — add sample data
-=======
-```
-- سرور `http://localhost:3001` پر چلے گا۔
+The API runs on http://localhost:3001 by default.
 
-3) دوسرا ٹرمینل کھولیں اور فرنٹ اینڈ چلائیں:
-```bash
+Start the client in another terminal:
+
+```powershell
 cd client
 npm install
 npm run dev
 ```
-- ایپ `http://localhost:5173` پر اوپن کریں۔
 
-> اگر آپ کا سرور کسی اور پورٹ/ڈومین پر ہے تو `client/.env` میں یہ رکھیں:
+The app will open at http://localhost:5173.
+
+If your server runs on a different host/port, update `client/.env`:
+
 ```
 VITE_API_URL=http://your-server:3001
 ```
 
-## فیچرز
-- طلبہ کا ریکارڈ: نام، فون، روم، شامل ہونے کی تاریخ، بقایا فیس، نوٹس
-- تلاش/فلٹر
-- شامل/اپڈیٹ/ڈلیٹ
-- ایک کلک میں **Excel** ایکسپورٹ (`Export Excel` بٹن)
-- **Sample** ڈیٹا شامل کرنے کا بٹن (ٹیسٹنگ کیلئے)
+API endpoints (server)
+- `GET /api/students` — list students
+- `POST /api/students` — create student (JSON body: { name, phone, room, join_date, fee_due, notes })
+- `PUT /api/students/:id` — update student
+- `DELETE /api/students/:id` — delete student
+- `GET /api/export` — download Excel file
+- `POST /api/seed` — add sample data
 
-## پروڈکشن کیلئے نوٹس
-- سرور پر `npm run start` سے Express چلے گا اور `./server/data/pg.db` میں ڈیٹا بنے گا۔
-- کسی VPS/EC2 پر ڈپلائے کرتے وقت **Nginx** کے ساتھ ریورس پراکسی لگا دیں اور **HTTPS** لگا لیں۔
-- بیک اپ کیلئے `server/data/pg.db` فائل کو محفوظ رکھیں۔
+Production notes
+- In production run `npm run start` under `server/`. The SQLite file is `server/data/pg.db`.
+- Put a reverse proxy (Nginx) and HTTPS in front of the server for production.
+- Back up `server/data/pg.db` regularly.
 
-خوش رہیے! 🙌
->>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
+اردو ہدایت (مختصر)
+
+یہ پروجیکٹ ایک سادہ Full‑Stack ایپ ہے جس میں React فرنٹ اینڈ اور Node.js/Express بیک اینڈ شامل ہے۔
+سرور SQLite فائل میں ڈیٹا رکھتا ہے، اور فرنٹ اینڈ Vite+React پر چلتا ہے۔
+
+چلانے کے لیے:
+1) `server` فولڈر میں جا کر `.env` بنائیں، `npm install` اور `npm run start` چلائیں。
+2) `client` فولڈر میں جا کر `npm install` اور `npm run dev` چلائیں۔
+
+خوش رہیے!

@@ -1,11 +1,20 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 node_modules
 data
 .env
 *.log
 =======
-
-server/
-
-server/
+=======
 >>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
+
+server/
+
+server/
+<<<<<<< HEAD
+>>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
+=======
+>>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
+
+# ignore client node_modules
+client/node_modules/
