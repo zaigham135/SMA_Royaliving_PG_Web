@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 node_modules
 data
 .env
 *.log
+=======
+
+server/
+
+server/
+>>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
