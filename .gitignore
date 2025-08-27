@@ -1,20 +1,27 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-node_modules
-data
-.env
-*.log
-=======
-=======
->>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
-
-server/
-
-server/
-<<<<<<< HEAD
->>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
-=======
->>>>>>> 8c84934 (Remove embedded server repo from parent index and ignore server/)
-
-# ignore client node_modules
+# Ignore node_modules
+node_modules/
 client/node_modules/
+server/node_modules/
+
+# Local env files
+.env
+*.local
+
+# Data and build artifacts
+data/
+dist/
+build/
+*.log
+
+# Backup of moved git metadata
+git-backup-*/
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# NPM/Yarn debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
